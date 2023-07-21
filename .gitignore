@@ -1,0 +1,7 @@
+
+GPS_YOUTUBE/MDK-ARM/GPS_YOUTUBE/stm32f4xx_it.o
+*.crf
+*.o
+*.alexa
+*.uvoptx
+*.d

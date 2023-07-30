@@ -101,7 +101,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-		HAL_UART_Receive_DMA(&huart1,(uint8_t *)Rxdata,700);
+  HAL_UART_Receive_DMA(&huart1,(uint8_t *)Rxdata,700);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -109,9 +109,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+			HAL_UART_Receive_DMA(&huart1,(uint8_t *)Rxdata,700);
     /* USER CODE BEGIN 3 */
-		get_location() ;
+			get_location() ;
   }
   /* USER CODE END 3 */
 }
@@ -161,13 +161,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-		void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	Flag =1;
+		Flag = 1;
 }
 void get_location(void)
 {
-	//	HAL_UART_Transmit(&huart2, (uint8_t*) Txdata, strlen(Txdata), HAL_MAX_DELAY);
+		//HAL_UART_Transmit(&huart2, (uint8_t*) Txdata, strlen(Txdata), HAL_MAX_DELAY);
 	if(Flag == 1)
    {
 			Msgindex = 0;
@@ -176,7 +176,7 @@ void get_location(void)
 			if(*ptr =='G')
 			{
          while(1)
-					{
+				{
 
 					GPS_Payload[Msgindex] = *ptr;
 					Msgindex++;
@@ -198,15 +198,14 @@ void get_location(void)
 
 void Format_data(float Time, float Lat, float Long)
 {
-
-
+		
 		char Data[100];
     Hours=(int) Time/1000;
     Min= (int) (Time - (Hours*10000))/100;
 		Sec = (int) (Time - ((Hours*10000) + (Min*100)));
-		sprintf(Data, "\r\nTime=%d:%d:%d Lat =%f, Long=%f", Hours+3,Min,Sec,Latitude,Longitude);
+		sprintf(Data, "\r\nTime=%d:%d:%d Lat =%f, Long=%f", Hours+3,Min,Sec,Latitude,Longitude/100);
     HAL_UART_Transmit(&huart2, (uint8_t*) Data, strlen(Data), HAL_MAX_DELAY);
-		 HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n\n",3,HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, (uint8_t*)"\r\n\n",3,HAL_MAX_DELAY);
 }
 /* USER CODE END 4 */
 
